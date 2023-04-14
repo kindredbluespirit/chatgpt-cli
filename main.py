@@ -19,7 +19,8 @@ def backoff_hdlr(details):
            .format(**details))
 
 @backoff.on_exception(backoff.expo, 
-    (openai.error.RateLimitError),
+    (openai.error.RateLimitError,
+        openai.error.APIConnectionError),
     on_backoff=backoff_hdlr)
 def get_response():
     response = openai.ChatCompletion.create(
